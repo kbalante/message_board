@@ -1,24 +1,24 @@
 require 'rails_helper'
 
-RSpec.describe "posts/index", type: :view do
+RSpec.describe "comments/index", type: :view do
   before(:each) do
-    assign(:posts, [
-      Post.create!(
-        title: "Title",
+    assign(:comments, [
+      Comment.create!(
+        post_id: "",
         body: "MyText",
         user_id: ""
       ),
-      Post.create!(
-        title: "Title",
+      Comment.create!(
+        post_id: "",
         body: "MyText",
         user_id: ""
       )
     ])
   end
 
-  it "renders a list of posts" do
+  it "renders a list of comments" do
     render
-    assert_select "tr>td", text: "Title".to_s, count: 2
+    assert_select "tr>td", text: "".to_s, count: 2
     assert_select "tr>td", text: "MyText".to_s, count: 2
     assert_select "tr>td", text: "".to_s, count: 2
   end
