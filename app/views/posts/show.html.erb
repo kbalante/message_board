@@ -1,4 +1,4 @@
-<p id="notice"><%= notice %></p>
+<h1>Post</h1>
 
 <p>
   <strong>Title:</strong>
@@ -24,7 +24,7 @@
       </thead>
 
       <tbody>
-      <% @post.comments.each do |comment| %>
+      <% @post.comments.by_oldest.each do |comment| %>
         <tr>
           <td><%= comment.body %></td>
           <td><%= comment.user_id %></td>

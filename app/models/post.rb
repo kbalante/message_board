@@ -3,4 +3,6 @@ class Post < ApplicationRecord
   belongs_to :user
 
   validates :title, presence: true, length: { minimum: 2 }
+
+  scope :by_most_recent, -> { order('created_at DESC') }
 end
