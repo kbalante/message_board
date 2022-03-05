@@ -11,19 +11,31 @@
   </head>
 
   <body>
-  <br/>
-
-  <% if notice %>
-    <p class="alert alert-success"><%= notice %></p>
-  <% end %>
-  <% if alert %>
-    <p class="alert alert-danger"><%= alert %></p>
-  <% end %>
-
   <% if user_signed_in? %>
-    <%= link_to "Home", root_path %> <%= link_to "Sign out", destroy_user_session_path, method: :delete %>
-  <% end %>
+    <nav class="navbar navbar-expand-sm bg-primary navbar-dark">
+      <div class="container-fluid">
+        <ul class="navbar-nav">
+          <li class="nav-item">
+              <%= link_to "Home", root_path, class: "nav-link active" %>
+          </li>
+          <li class="nav-item">
+            <%= link_to "Sign out", destroy_user_session_path, method: :delete, class: "nav-link active" %>
+          </li>
+        </ul>
+      </div>
+    </nav>
 
-  <%= yield %>
+    <div class="container p-5 my-5 border">
+      <% if notice %>
+        <p class="alert alert-success"><%= notice %></p>
+      <% end %>
+      <% if alert %>
+        <p class="alert alert-danger"><%= alert %></p>
+      <% end %>
+      <%= yield %>
+    </div>
+  <% else %>
+    <%= yield %>
+  <% end %>
   </body>
 </html>
