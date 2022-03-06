@@ -1,4 +1,4 @@
-<h1>Post</h1>
+<h2>Post</h2>
 
 <p>
   <strong>Title:</strong>
@@ -16,9 +16,8 @@
     <table>
       <thead>
       <tr>
-        <th>Title</th>
         <th>Body</th>
-        <th>User</th>
+        <th>Author</th>
         <th colspan="3"></th>
       </tr>
       </thead>
@@ -27,7 +26,7 @@
       <% @post.comments.by_oldest.each do |comment| %>
         <tr>
           <td><%= comment.body %></td>
-          <td><%= comment.user_id %></td>
+          <td><%= comment.user.name %></td>
           <td><%= link_to 'Show', comment %></td>
           <td><%= link_to 'Edit', edit_comment_path(comment) %></td>
           <td><%= link_to 'Delete', comment, method: :delete, data: { confirm: 'Are you sure?' } %></td>
