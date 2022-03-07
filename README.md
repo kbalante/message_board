@@ -14,3 +14,4 @@ Visting a posting page will give you the posts details, but also show all the co
  
 Lastly, you will not be allowed to edit other authors postings and comments.
 
+![Home Page](https://github.com/kbalante/message_board/blob/master/home-page.jpg)
