@@ -18,11 +18,12 @@ RSpec.describe "/posts", type: :request do
   # Post. As you add validations to Post, be sure to
   # adjust the attributes here as well.
   let(:valid_attributes) {
-    skip("Add a hash of attributes valid for your model")
+    title = "Ha Ling Peak"
+    body  = ""
   }
 
   let(:invalid_attributes) {
-    skip("Add a hash of attributes invalid for your model")
+    title = "H"
   }
 
   describe "GET /index" do
