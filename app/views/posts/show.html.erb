@@ -7,6 +7,9 @@
   <div class="row">
     Body: <%= @post.body %>
   </div>
+  <div class="row">
+    Author: <%= @post.user.name %>
+  </div>
 </div>
 
 <br>
@@ -31,7 +34,12 @@
   </tbody>
 </table>
 
-<p><%= link_to 'New Comment', new_comment_path(post_id: @post.id) %></p>
+<p><%= link_to 'New Comment', new_comment_path(post_id: @post.id), {:remote => true, 'data-toggle' =>  "modal", 'data-target' => '#modal-window', class: 'btn btn-primary'}  %></p>
 
-<%= link_to 'Edit', edit_post_path(@post) %> |
-<%= link_to 'Back', posts_path %>
+<div id="modal-window" class="modal hide fade" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content"></div>
+  </div>
+</div>
+
+<%= link_to 'Back', root_path %>

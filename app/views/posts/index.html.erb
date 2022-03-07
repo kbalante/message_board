@@ -6,6 +6,7 @@
       <th scope="col">Title</th>
       <th scope="col">Body</th>
       <th scope="col">Author</th>
+      <th scope="col">Created</th>
       <th scope="col" colspan="3"></th>
     </tr>
   </thead>
@@ -16,6 +17,7 @@
         <td><%= post.title %></td>
         <td><%= post.body %></td>
         <td><%= post.user.name %></td>
+        <td><%= post.created_at.to_time.strftime('%b %e, %Y %l:%M %p') %></td>
         <td><%= link_to 'Show', post %></td>
         <% if post.user == current_user %>
           <td><%= link_to 'Edit', edit_post_path(post) %></td>

@@ -38,7 +38,7 @@ class PostsController < ApplicationController
   # PATCH/PUT /posts/1 or /posts/1.json
   def update
     respond_to do |format|
-      if @post.update(post_params)
+      if permitted_user?(@post.user) && @post.update(post_params)
         format.html { redirect_to posts_url, notice: "Post was successfully updated." }
         format.json { render :show, status: :ok, location: @post }
       else
@@ -50,10 +50,14 @@ class PostsController < ApplicationController
 
   # DELETE /posts/1 or /posts/1.json
   def destroy
-    @post.destroy
+    @post.destroy if permitted_user?(@post.user)
 
     respond_to do |format|
-      format.html { redirect_to posts_url, notice: "Post was successfully destroyed." }
+      if permitted_user?(@post.user)
+        format.html { redirect_to posts_url, notice: "Post was successfully destroyed." }
+      else
+        format.html { redirect_to posts_url, notice: "Post was not successfully destroyed." }
+      end
       format.json { head :no_content }
     end
   end
@@ -67,5 +71,10 @@ class PostsController < ApplicationController
     # Only allow a list of trusted parameters through.
     def post_params
       params.require(:post).permit(:title, :body, :user_id)
+    end
+
+    # allow permitted user (i.e. author) to edit and destroy tasks
+    def permitted_user?(user)
+      current_user == user
     end
 end
