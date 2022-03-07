@@ -3,7 +3,7 @@
 Barebones Message Board created using Rails 6.1, Ruby 2.6.9, Devise 4.8.1, and Bootstrap 5.
 
 This application requires you to create an account with a name, email, and password as well as login with your 
-credentials before accessing the message board.
+credentials before accessing the message board. You will not be able to access the message board unless you are logged in.
 
 The home page displays a listing of all the postings and the ability to create a posting. For each posting on the home 
 page, there is a link to show more info on a details page. If you are the author of that posting, you will be shown links
