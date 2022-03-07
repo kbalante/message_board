@@ -1,7 +1,7 @@
 require 'rails_helper'
 
 RSpec.describe Post, type: :model do
-  let(:user) { User.new(name: "john doe", email: 'test@example.com', password: 'password123', password_confirmation: 'password123') }
+  let(:user) { User.new(name: "john doe", email: 'test@example.com', password: 'pAssword123#', password_confirmation: 'pAssword123#') }
 
   it "is valid with valid attributes" do
     post = Post.new(title: "Ha Ling Peak", body: "Best trail in Canmore", user: user)

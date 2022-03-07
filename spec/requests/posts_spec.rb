@@ -13,21 +13,25 @@ require 'rails_helper'
 # sticking to rails and rspec-rails APIs to keep things simple and stable.
 
 RSpec.describe "/posts", type: :request do
-  
-  # This should return the minimal set of attributes required to create a valid
-  # Post. As you add validations to Post, be sure to
-  # adjust the attributes here as well.
+  let(:user) { User.create!(name: "john doe", email: 'test@example.com', password: 'pAssword123#', password_confirmation: 'pAssword123#') }
+
   let(:valid_attributes) {
-    title = "Ha Ling Peak"
-    body  = ""
+    { title: "Ha Ling Peak", body: "Best Trail in Canmore", user_id:  user.id }
   }
 
   let(:invalid_attributes) {
-    title = "H"
+    { body: "Best Trail in Canmore" }
   }
 
   describe "GET /index" do
+    it "renders an successful response if not logged in" do
+      Post.create! valid_attributes
+      get posts_url
+      expect(response).to_not be_successful
+    end
+
     it "renders a successful response" do
+      sign_in(user)
       Post.create! valid_attributes
       get posts_url
       expect(response).to be_successful
@@ -35,7 +39,14 @@ RSpec.describe "/posts", type: :request do
   end
 
   describe "GET /show" do
+    it "renders an unsuccessful response if not logged in" do
+      post = Post.create! valid_attributes
+      get post_url(post)
+      expect(response).to_not be_successful
+    end
+
     it "renders a successful response" do
+      sign_in(user)
       post = Post.create! valid_attributes
       get post_url(post)
       expect(response).to be_successful
@@ -43,44 +54,67 @@ RSpec.describe "/posts", type: :request do
   end
 
   describe "GET /new" do
+    it "renders an unsuccessful response if not logged in" do
+      get new_post_url
+      expect(response).to_not be_successful
+    end
+
     it "renders a successful response" do
+      sign_in(user)
       get new_post_url
       expect(response).to be_successful
     end
   end
 
   describe "GET /edit" do
-    it "renders a successful response" do
+    it "renders an unsuccessful response if not logged in" do
       post = Post.create! valid_attributes
       get edit_post_url(post)
-      expect(response).to be_successful
+      expect(response.body).to_not include("Ha Ling Peak")
+    end
+
+    it "renders a successful response" do
+      sign_in(user)
+      post = Post.create! valid_attributes
+      get edit_post_url(post)
+      expect(response.body).to include("Ha Ling Peak")
     end
   end
 
+
   describe "POST /create" do
     context "with valid parameters" do
-      it "creates a new Post" do
+      it "does not create a new Post if not signed in" do
         expect {
           post posts_url, params: { post: valid_attributes }
-        }.to change(Post, :count).by(1)
+        }.to change(Post, :count).by(0)
       end
 
+      it "creates a new Post" do
+        sign_in(user)
+        expect {
+                 post posts_url, params: { post: valid_attributes }
+               }.to change(Post, :count).by(1)
+      end
       it "redirects to the created post" do
+        sign_in(user)
         post posts_url, params: { post: valid_attributes }
-        expect(response).to redirect_to(post_url(Post.last))
+        expect(response).to redirect_to(posts_url)
       end
     end
 
     context "with invalid parameters" do
       it "does not create a new Post" do
+        sign_in(user)
         expect {
           post posts_url, params: { post: invalid_attributes }
         }.to change(Post, :count).by(0)
       end
 
-      it "renders a successful response (i.e. to display the 'new' template)" do
+      it "renders an unsuccessful response" do
+        sign_in(user)
         post posts_url, params: { post: invalid_attributes }
-        expect(response).to be_successful
+        expect(response).to_not be_successful
       end
     end
   end
@@ -88,35 +122,56 @@ RSpec.describe "/posts", type: :request do
   describe "PATCH /update" do
     context "with valid parameters" do
       let(:new_attributes) {
-        skip("Add a hash of attributes valid for your model")
+        { title: "East End of Rundle", body: "Second best Trail in Canmore", user_id:  user.id }
       }
 
-      it "updates the requested post" do
+      it "does not update the requested post if not logged in" do
         post = Post.create! valid_attributes
         patch post_url(post), params: { post: new_attributes }
         post.reload
-        skip("Add assertions for updated state")
+        expect(post.title).to_not eq("East End of Rundle")
+        expect(post.body).to_not eq("Second best Trail in Canmore")
+      end
+
+      it "updates the requested post" do
+        sign_in(user)
+        post = Post.create! valid_attributes
+        patch post_url(post), params: { post: new_attributes }
+        post.reload
+        expect(post.title).to eq("East End of Rundle")
+        expect(post.body).to eq("Second best Trail in Canmore")
       end
 
       it "redirects to the post" do
+        sign_in(user)
         post = Post.create! valid_attributes
         patch post_url(post), params: { post: new_attributes }
         post.reload
-        expect(response).to redirect_to(post_url(post))
+        expect(response).to redirect_to(posts_url)
       end
     end
 
     context "with invalid parameters" do
-      it "renders a successful response (i.e. to display the 'edit' template)" do
+      it "renders an unsuccessful response" do
+        sign_in(user)
         post = Post.create! valid_attributes
         patch post_url(post), params: { post: invalid_attributes }
-        expect(response).to be_successful
+        expect(response).to_not be_successful
       end
     end
   end
 
   describe "DELETE /destroy" do
+
+    it "does not destroy the requested post if not signed in" do
+      post = Post.create! valid_attributes
+      expect {
+        delete post_url(post)
+      }.to change(Post, :count).by(0)
+    end
+
     it "destroys the requested post" do
+      sign_in(user)
       post = Post.create! valid_attributes
       expect {
         delete post_url(post)
@@ -124,6 +179,7 @@ RSpec.describe "/posts", type: :request do
     end
 
     it "redirects to the posts list" do
+      sign_in(user)
       post = Post.create! valid_attributes
       delete post_url(post)
       expect(response).to redirect_to(posts_url)
