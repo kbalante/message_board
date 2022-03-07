@@ -10,13 +10,16 @@
   <div class="row">
     Author: <%= @post.user.name %>
   </div>
+  <div class="row">
+    Created: <%= @post.created_at.to_time.strftime('%b %e, %Y %l:%M %p') %>
+  </div>
 </div>
 
 <br>
 <table class="table">
   <thead>
   <tr>
-    <th scope="col" colspan="5">Comments</th>
+    <th scope="col" colspan="4">Comments</th>
   </tr>
   </thead>
   <tbody>
@@ -24,7 +27,6 @@
     <tr>
       <td><%= comment.body %></td>
       <td><%= comment.user.name %></td>
-      <td><%= link_to 'Show', comment %></td>
       <% if comment.user == current_user %>
         <td><%= link_to 'Edit', edit_comment_path(comment) %></td>
         <td><%= link_to 'Delete', comment, method: :delete, data: { confirm: 'Are you sure?' } %></td>
@@ -34,12 +36,6 @@
   </tbody>
 </table>
 
-<p><%= link_to 'New Comment', new_comment_path(post_id: @post.id), {:remote => true, 'data-toggle' =>  "modal", 'data-target' => '#modal-window', class: 'btn btn-primary'}  %></p>
-
-<div id="modal-window" class="modal hide fade" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-  <div class="modal-dialog" role="document">
-    <div class="modal-content"></div>
-  </div>
-</div>
+<p><%= link_to 'New Comment', new_comment_path(post_id: @post.id)  %></p>
 
 <%= link_to 'Back', root_path %>

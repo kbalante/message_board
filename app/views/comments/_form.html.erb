@@ -1,35 +1,26 @@
-<div class="modal-header">
-  <button type="button" class="close" data-dismiss="modal">x</button>
-  <h4 class="modal-title" id="myModalLabel">Modal title</h4>
-</div>
-<div class="modal-body">
-  <%= form_with(model: comment) do |form| %>
-    <% if comment.errors.any? %>
-      <div id="error_explanation">
-        <h2><%= pluralize(comment.errors.count, "error") %> prohibited this comment from being saved:</h2>
+<%= form_with(model: comment) do |form| %>
+  <% if comment.errors.any? %>
+    <div id="error_explanation">
+      <h2><%= pluralize(comment.errors.count, "error") %> prohibited this comment from being saved:</h2>
 
-        <ul>
-          <% comment.errors.each do |error| %>
-            <li><%= error.full_message %></li>
-          <% end %>
-        </ul>
-      </div>
-    <% end %>
-
-    <%= form.hidden_field :post_id %>
-
-    <div class="field">
-      * <%= form.label :body %>
-      <%= form.text_area :body %>
-    </div>
-
-    <%= form.hidden_field :user_id %>
-
-    <div class="actions">
-      <%= form.submit %>
+      <ul>
+        <% comment.errors.each do |error| %>
+          <li><%= error.full_message %></li>
+        <% end %>
+      </ul>
     </div>
   <% end %>
-</div>
-<div class="modal-footer">
-  <button class="btn btn-primary">Save</button>
-</div>
+
+  <%= form.hidden_field :post_id %>
+
+  <div class="field">
+    * <%= form.label :body %>
+    <%= form.text_area :body %>
+  </div>
+
+  <%= form.hidden_field :user_id %>
+
+  <div class="actions">
+    <%= form.submit %>
+  </div>
+<% end %>

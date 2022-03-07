@@ -5,6 +5,11 @@ class ApplicationController < ActionController::Base
 
   protected
 
+  # allow permitted user (i.e. author) to edit and destroy posts and comments
+  def permitted_user?(user)
+    current_user == user
+  end
+
   def configure_permitted_parameters
     devise_parameter_sanitizer.permit(:sign_up, keys: [:name])
   end

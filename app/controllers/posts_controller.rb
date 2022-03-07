@@ -72,9 +72,4 @@ class PostsController < ApplicationController
     def post_params
       params.require(:post).permit(:title, :body, :user_id)
     end
-
-    # allow permitted user (i.e. author) to edit and destroy tasks
-    def permitted_user?(user)
-      current_user == user
-    end
 end

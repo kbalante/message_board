@@ -23,8 +23,8 @@ class CommentsController < ApplicationController
 
     respond_to do |format|
       if @comment.save
-        format.html { redirect_to comment_url(@comment), notice: "Comment was successfully created." }
-        format.json { render :show, status: :created, location: @comment }
+        format.html { redirect_to post_url(@comment.post) , notice: "Comment was successfully created." }
+        format.json { render :show, status: :ok, location: @post }
       else
         format.html { render :new, status: :unprocessable_entity }
         format.json { render json: @comment.errors, status: :unprocessable_entity }
@@ -35,8 +35,8 @@ class CommentsController < ApplicationController
   # PATCH/PUT /comments/1 or /comments/1.json
   def update
     respond_to do |format|
-      if @comment.update(comment_params)
-        format.html { redirect_to comment_url(@comment), notice: "Comment was successfully updated." }
+      if permitted_user?(@comment.user) && @comment.update(comment_params)
+        format.html { redirect_to post_url(@comment.post) , notice: "Comment was successfully updated." }
         format.json { render :show, status: :ok, location: @comment }
       else
         format.html { render :edit, status: :unprocessable_entity }
@@ -47,10 +47,14 @@ class CommentsController < ApplicationController
 
   # DELETE /comments/1 or /comments/1.json
   def destroy
-    @comment.destroy
+    @comment.destroy if permitted_user?(@comment.user)
 
     respond_to do |format|
-      format.html { redirect_to comments_url, notice: "Comment was successfully destroyed." }
+      if permitted_user?(@comment.user)
+        format.html { redirect_to post_url(@comment.post) , notice: "Comment was successfully destroyed." }
+      else
+        format.html { redirect_to post_url(@comment.post) , notice: "Comment was not successfully destroyed." }
+      end
       format.json { head :no_content }
     end
   end
