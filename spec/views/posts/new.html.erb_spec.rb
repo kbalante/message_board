@@ -1,11 +1,13 @@
 require 'rails_helper'
 
 RSpec.describe "posts/new", type: :view do
+  let(:user) { User.create!(name: "john doe", email: 'test@example.com', password: 'pAssword123#', password_confirmation: 'pAssword123#') }
+
   before(:each) do
     assign(:post, Post.new(
       title: "MyString",
       body: "MyText",
-      user_id: ""
+      user_id: user.id
     ))
   end
 
