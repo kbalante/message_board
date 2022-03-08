@@ -22,4 +22,10 @@ RSpec.describe Post, type: :model do
     post = Post.new(title: "Hello There", user: user)
     expect(post).to be_valid
   end
+
+  it "orders by most recent first" do
+    post1 = Post.create!(title: "first", user: user)
+    post2 = Post.create!(title: "second", user: user)
+    expect(Post.by_most_recent).to eq([post2, post1])
+  end
 end
